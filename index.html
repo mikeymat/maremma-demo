@@ -98,6 +98,19 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .dish .txt p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 12.5px; }
 .dish .badge { margin-bottom: 2px; padding: 0 8px; font-size: 10.5px; }
 .dish .hint2 { margin-top: 2px; font-size: 12px; }
+/* prima schermata compatta: tutto visibile sopra la barra ordine */
+.screen .top { padding: calc(10px + env(safe-area-inset-top)) 14px 0; }
+.screen .top .bar { position: absolute; top: calc(12px + env(safe-area-inset-top)); left: 14px; z-index: 7; }
+.screen .sign { margin: 0 auto; }
+.screen .sign svg.neonpizza { width: 96px; height: 66px; }
+.screen .logo-1, .screen .logo-2 { font-size: 30px; }
+.screen .headline { margin: 8px 14px 0; padding: 14px 16px 12px; }
+.screen .headline h2 { font-size: 26px; }
+.screen .status { margin-top: 8px; }
+.screen .cta { margin-top: 10px; min-height: 52px; font-size: 19px; }
+.screen .facts { margin-top: 10px; }
+.screen .when { margin: 12px 14px 0; padding: 12px; }
+.screen .when h3 { margin-bottom: 8px; }
 .dish.tap { cursor: pointer; }
 .dname { all: unset; cursor: pointer; }
 .dname:focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; border-radius: 6px; }
