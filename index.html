@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maremma che Pizza! Ordina online</title>
+<style>
+:root {
+  --bg: #0d0605; --ink: #fff3e6; --muted: #d9bfae; --red: #e8301a; --neon: #ff8a4c; --neon-2: #ff5a1f;
+  --cream: #fff4e8; --dark: #1a0b07; --ok: #62d58f; --blue: #1f6feb; --line: rgba(255,138,76,.35);
+  --brick: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><path d='M0 0H64M0 32H64M0 0V32M32 32V64' stroke='rgba(0,0,0,0.5)' stroke-width='3' fill='none'/></svg>");
+}
+* { box-sizing: border-box; }
+html { color-scheme: dark; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+/* ---------- cornice della proposta ---------- */
+.proposal { padding: 22px 20px 0; max-width: 1080px; margin: 0 auto; }
+.proposal small { color: var(--neon); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
+.proposal h1 { margin: 4px 0; font-size: clamp(24px, 4vw, 34px); line-height: 1.15; }
+.proposal p { margin: 0; color: var(--muted); max-width: 62ch; }
+.stage { max-width: 1080px; margin: 0 auto; padding: 22px 20px 56px; display: grid; grid-template-columns: 410px 1fr; gap: 40px; align-items: start; }
+@media (max-width: 900px) { .stage { grid-template-columns: 1fr; justify-items: center; } .notes { width: 100%; max-width: 560px; } }
+
+/* ---------- telefono ---------- */
+.phone { position: relative; width: min(100%, 390px); height: min(800px, 86vh); min-height: 580px; border-radius: 40px; border: 10px solid #000; background: #000; box-shadow: 0 30px 80px rgba(0,0,0,.65), 0 0 60px rgba(232,48,26,.18); overflow: hidden; }
+.screen {
+  height: 100%; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; padding-bottom: 130px; scrollbar-width: none;
+  background:
+    radial-gradient(90% 38% at 50% 10%, rgba(255,110,50,.55), transparent 70%),
+    var(--brick),
+    linear-gradient(180deg, #7a1a0c 0%, #4a0f08 55%, #2a0805 100%);
+}
+.screen::-webkit-scrollbar { display: none; }
+
+/* ---------- testata ---------- */
+.top { position: relative; padding: 14px 14px 0; }
+.bar { display: flex; align-items: flex-start; justify-content: space-between; }
+.pill-btn, .round-btn { border: 0; background: rgba(255,255,255,.94); color: var(--dark); box-shadow: 0 4px 14px rgba(0,0,0,.35); }
+.pill-btn { height: 44px; padding: 0 12px 0 10px; border-radius: 22px; display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; }
+.flag { width: 26px; height: 18px; border-radius: 3px; background: linear-gradient(90deg, #1f9d4a 33%, #fff 33% 66%, #d62828 66%); box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+.round-btn { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; }
+.round-btn svg { width: 24px; height: 24px; stroke: var(--dark); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+.sign { text-align: center; margin: -6px auto 0; width: 250px; }
+.sign svg.neonpizza { width: 120px; height: 82px; display: block; margin: 0 auto; }
+.neon { fill: none; stroke: #ffd9b8; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 3px #ff9a5a) drop-shadow(0 0 10px #ff4d1a); }
+.logo-1, .logo-2 { display: block; color: #fff0e0; text-shadow: 0 0 4px #ffb27a, 0 0 12px #ff6a2a, 0 0 28px #ff3d0a; }
+.logo-1 { font-size: 34px; font-weight: 300; letter-spacing: .03em; line-height: 1; margin-top: 2px; }
+.logo-2 { font-size: 34px; font-weight: 600; font-style: italic; line-height: 1.05; }
+.flick { animation: flick 5s infinite; }
+@keyframes flick { 0%, 17%, 19%, 23%, 100% { opacity: 1; } 18%, 21% { opacity: .35; } }
+
+/* ---------- riquadro titolo (stile originale, più leggibile) ---------- */
+.headline { position: relative; margin: 14px 14px 0; padding: 20px 18px 18px; background: var(--cream); color: var(--dark); border-radius: 26px; text-align: center; box-shadow: 0 0 0 3px rgba(255,138,76,.55), 0 0 28px rgba(255,90,31,.45), 0 16px 40px rgba(0,0,0,.5); }
+.headline h2 { margin: 0; font: 800 28px/1.12 Georgia, "Times New Roman", serif; letter-spacing: -.01em; }
+.headline h2 span { color: var(--red); }
+.status { display: inline-flex; align-items: center; gap: 8px; margin: 12px 0 0; padding: 6px 12px; border-radius: 999px; background: rgba(31,157,74,.12); color: #17803b; font-weight: 700; font-size: 13.5px; }
+.status i { width: 9px; height: 9px; border-radius: 50%; background: #1f9d4a; animation: pulse 2s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(31,157,74,.55); } 70%, 100% { box-shadow: 0 0 0 9px rgba(31,157,74,0); } }
+.cta { position: relative; display: block; width: 100%; min-height: 58px; margin-top: 14px; border: 0; border-radius: 18px; color: #fff; font-size: 20px; font-weight: 800; letter-spacing: .01em; background: linear-gradient(180deg, #ff4a2b, #d9230f); box-shadow: 0 6px 0 #8f1608, 0 12px 28px rgba(232,48,26,.5); animation: glow 2.6s ease-in-out infinite; }
+.cta:active { transform: translateY(3px); box-shadow: 0 3px 0 #8f1608, 0 6px 16px rgba(232,48,26,.5); }
+@keyframes glow { 50% { box-shadow: 0 6px 0 #8f1608, 0 12px 38px rgba(255,90,31,.85); } }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+.fact { background: #f6e6d6; border-radius: 12px; padding: 8px 4px; font-size: 11.5px; color: #7a5a48; }
+.fact b { display: block; color: var(--dark); font-size: 12.5px; white-space: nowrap; }
+
+/* ---------- orario ritiro ---------- */
+.when { margin: 18px 14px 0; padding: 14px; border-radius: 20px; background: rgba(15,4,3,.78); border: 1px solid var(--line); backdrop-filter: blur(6px); }
+.when h3 { margin: 0 0 10px; font-size: 16px; }
+.slots { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.slots::-webkit-scrollbar { display: none; }
+.slot { flex: none; min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1.5px solid var(--line); background: transparent; font-weight: 700; }
+.slot[aria-pressed=true] { background: var(--neon); border-color: var(--neon); color: var(--dark); }
+
+/* ---------- categorie ---------- */
+.cats { position: sticky; top: 0; z-index: 3; display: flex; gap: 8px; overflow-x: auto; padding: 16px 14px 10px; scrollbar-width: none; background: linear-gradient(rgba(42,8,5,.96) 70%, transparent); }
+.cats::-webkit-scrollbar { display: none; }
+.chip { flex: none; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--neon); background: rgba(0,0,0,.45); font-weight: 700; box-shadow: 0 0 10px rgba(255,138,76,.25); }
+.chip[aria-current=true] { background: var(--neon); color: var(--dark); box-shadow: 0 0 16px rgba(255,138,76,.7); }
+
+/* ---------- piatti ---------- */
+.sec { padding: 0 14px; scroll-margin-top: 76px; }
+.sec h3 { margin: 12px 2px 10px; font-size: 22px; text-shadow: 0 0 12px rgba(255,106,42,.8); }
+.phone { overflow: hidden; overflow: clip; }
+/* card compatte: foto, testo e prezzo/+ sulla stessa riga */
+.sec .dish { grid-template-columns: 64px minmax(0, 1fr) auto; gap: 10px; padding: 10px; margin-bottom: 10px; border-radius: 18px; }
+.dish .pic { width: 64px; height: 64px; border-radius: 14px; font-size: 32px; }
+.dish .pic svg { width: 58px; height: 58px; }
+.dish .foot { grid-column: auto; flex-direction: column; align-items: flex-end; gap: 6px; padding-top: 0; border-top: 0; }
+.dish .price { font-size: 16px; }
+.dish .qty { gap: 3px; }
+.dish .qty button { width: 40px; height: 40px; font-size: 22px; }
+.dish .qty span { min-width: 20px; font-size: 16px; }
+.dish .txt h4 { font-size: 16.5px; }
+.dish .txt p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 12.5px; }
+.dish .badge { margin-bottom: 2px; padding: 0 8px; font-size: 10.5px; }
+.dish .hint2 { margin-top: 2px; font-size: 12px; }
+.dish.tap { cursor: pointer; }
+.dname { all: unset; cursor: pointer; }
+.dname:focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; border-radius: 6px; }
+.hint2 { display: inline-block; margin-top: 4px; font-size: 12.5px; font-weight: 700; color: var(--neon); }
+.mods { display: block; margin-top: 2px; font-size: 12.5px; font-weight: 400; color: #7a5a48; }
+.pd { position: absolute; inset: 0; z-index: 10; display: flex; flex-direction: column; background: #160805; transform: translateY(100%); visibility: hidden; transition: transform .32s cubic-bezier(.2,.8,.2,1), visibility 0s linear .32s; }
+.pd.open { transform: none; visibility: visible; transition: transform .32s cubic-bezier(.2,.8,.2,1), visibility 0s; }
+.pdscroll { flex: 1; min-height: 0; overflow-y: auto; padding-bottom: 14px; scrollbar-width: none; }
+.pdscroll::-webkit-scrollbar { display: none; }
+.pdpic { aspect-ratio: 4 / 3; background: repeating-linear-gradient(180deg, #6b3a1e 0 31px, #5a2f17 31px 33px); }
+.pdpic svg { display: block; width: 100%; height: 100%; }
+.pdx { position: absolute; top: calc(12px + env(safe-area-inset-top)); right: 12px; z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: rgba(0,0,0,.6); color: var(--ink); font-size: 18px; }
+.pdbody { padding: 16px 16px 0; }
+.pdbody h2 { margin: 4px 0 0; font: 800 30px/1.1 Georgia, "Times New Roman", serif; }
+.pdbody .price { margin-top: 4px; font-size: 20px; }
+.pdbody .desc { margin: 8px 0 0; color: var(--muted); }
+.pdsec { margin: 20px 16px 0; }
+.pdsec h3 { margin: 0; font-size: 18px; }
+.pdsec p { margin: 2px 0 10px; font-size: 13px; color: var(--muted); }
+.prow { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 0 14px; margin-bottom: 8px; border-radius: 14px; border: 1.5px solid var(--line); background: rgba(255,255,255,.05); color: var(--ink); font-size: 16px; text-align: left; }
+.prow .chk { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--neon); font-weight: 800; color: var(--dark); }
+.prow.on .chk { background: var(--neon); }
+.prow .pl { flex: 1; }
+.prow .pt { font-size: 13.5px; font-weight: 700; color: #ffc9a3; }
+.prow.base:not(.on) .pl { text-decoration: line-through; opacity: .6; }
+.prow.base:not(.on) .pt { color: #ff8f86; }
+.pdbar { flex: none; display: flex; align-items: center; gap: 10px; padding: 12px 14px calc(12px + env(safe-area-inset-bottom)); background: #0d0504; border-top: 1px solid var(--line); }
+.pdadd { flex: 1; min-height: 54px; border: 0; border-radius: 16px; color: #fff; font-weight: 800; font-size: 17px; background: linear-gradient(180deg, #ff4a2b, #cf2410); box-shadow: 0 4px 0 #8f1608; }
+.pdadd:active { transform: translateY(3px); box-shadow: 0 1px 0 #8f1608; }
+.dish { display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 8px 12px; align-items: center; padding: 12px; margin-bottom: 12px; border-radius: 22px; background: rgba(15,4,3,.82); border: 1px solid var(--line); backdrop-filter: blur(6px); box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+.pic { position: relative; flex: none; width: 82px; height: 82px; border-radius: 18px; background: radial-gradient(circle at 50% 40%, #4a1d10, #240b06); display: grid; place-items: center; font-size: 40px; overflow: hidden; }
+.pic svg { width: 76px; height: 76px; filter: drop-shadow(0 4px 6px rgba(0,0,0,.5)); }
+.txt { min-width: 0; }
+.foot { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; padding-top: 2px; border-top: 1px solid rgba(255,138,76,.18); }
+.badge { display: inline-block; margin-bottom: 3px; padding: 1px 9px; border-radius: 999px; background: var(--neon); color: var(--dark); font-size: 11px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; }
+.badge.hot { background: #ff3d2e; color: #fff; }
+.txt h4 { margin: 0; font-size: 18px; line-height: 1.2; }
+.txt p { margin: 2px 0 0; font-size: 13px; line-height: 1.35; color: var(--muted); }
+.price { font-weight: 800; font-size: 17px; color: #ffc9a3; text-shadow: 0 0 10px rgba(255,138,76,.55); }
+.qty { display: flex; align-items: center; gap: 4px; }
+.qty button { width: 46px; height: 46px; border-radius: 50%; border: 0; background: linear-gradient(180deg, #ff4a2b, #d9230f); color: #fff; font-size: 26px; font-weight: 700; line-height: 1; box-shadow: 0 0 14px rgba(255,90,31,.6); }
+.qty button.minus { background: rgba(255,255,255,.12); box-shadow: none; border: 1px solid var(--line); }
+.qty span { min-width: 22px; text-align: center; font-weight: 800; font-size: 17px; }
+.hint { margin: 10px 14px 0; padding: 12px 14px; border-radius: 14px; border: 1px dashed var(--line); background: rgba(0,0,0,.4); color: var(--muted); font-size: 13.5px; }
+
+/* ---------- barra ordine ---------- */
+.dock { position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; padding: 34px 12px 14px; background: linear-gradient(transparent, rgba(20,4,2,.95) 62%); pointer-events: none; }
+.dock > * { pointer-events: auto; }
+.cart { width: 100%; display: flex; align-items: center; gap: 10px; min-height: 68px; padding: 10px 10px 10px 14px; border: 0; border-radius: 22px; text-align: left; color: #fff; background: linear-gradient(180deg, #ff4a2b, #cf2410); box-shadow: 0 0 0 2px rgba(255,205,165,.4), 0 10px 30px rgba(232,48,26,.55); }
+.cart.empty { justify-content: center; min-height: 58px; background: rgba(15,4,3,.9); color: var(--ink); border: 1.5px dashed var(--neon); box-shadow: 0 0 18px rgba(255,138,76,.25); font-weight: 700; font-size: 16px; animation: nudge 3s ease-in-out infinite; }
+@keyframes nudge { 50% { box-shadow: 0 0 26px rgba(255,138,76,.55); } }
+.thumbs { display: flex; flex: none; padding-left: 8px; }
+.thumbs span { position: relative; width: 38px; height: 38px; margin-left: -12px; border-radius: 50%; background: #2a0f08; border: 2px solid #fff; display: grid; place-items: center; font-size: 20px; overflow: hidden; }
+.thumbs span svg { width: 32px; height: 32px; }
+.thumbs .more { background: #fff; color: var(--dark); font-size: 13px; font-weight: 800; }
+.cart .mid { flex: 1; min-width: 0; line-height: 1.2; }
+.cart .mid b { display: block; font-size: 16px; white-space: nowrap; }
+.cart .mid small { white-space: nowrap; }
+.cart .mid small { display: block; font-size: 12px; opacity: .92; line-height: 1.25; }
+.cart .go { flex: none; display: flex; align-items: center; gap: 6px; height: 50px; padding: 0 12px; border-radius: 16px; background: var(--cream); color: var(--dark); font-weight: 800; font-size: 16px; white-space: nowrap; }
+.cart .go i { font-style: normal; font-size: 22px; line-height: 1; color: var(--red); }
+.dock.enter .cart { animation: rise .45s cubic-bezier(.2,.9,.3,1.25); }
+@keyframes rise { from { transform: translateY(46px); opacity: 0; } }
+.bump { animation: bump .3s; }
+@keyframes bump { 40% { transform: scale(1.035); } }
+
+/* ---------- riepilogo ordine ---------- */
+.sheet { position: absolute; inset: 0; z-index: 9; display: flex; align-items: flex-end; background: rgba(0,0,0,.62); opacity: 0; pointer-events: none; transition: opacity .25s; }
+.sheet.open { opacity: 1; pointer-events: auto; }
+.panel { width: 100%; max-height: 84%; overflow: auto; background: var(--cream); color: var(--dark); border-radius: 28px 28px 0 0; padding: 10px 18px 22px; transform: translateY(100%); transition: transform .32s cubic-bezier(.2,.8,.2,1); scrollbar-width: none; }
+.sheet.open .panel { transform: none; }
+.grab { width: 44px; height: 5px; border-radius: 3px; background: #d8c3b0; margin: 0 auto 12px; }
+.panel h3 { margin: 0 0 4px; font: 800 25px/1.1 Georgia, "Times New Roman", serif; }
+.panel .sub { margin: 0 0 6px; color: #7a5a48; font-size: 14px; }
+.sline { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid #ecd9c6; }
+.sline b { font-size: 15.5px; }
+.mini { display: flex; align-items: center; gap: 2px; }
+.mini button { width: 38px; height: 38px; border-radius: 50%; border: 1px solid #d9b99c; background: #fff; color: var(--dark); font-size: 21px; font-weight: 700; line-height: 1; }
+.mini span { min-width: 22px; text-align: center; font-weight: 800; }
+.sline .lp { min-width: 64px; text-align: right; font-weight: 800; }
+.srow { display: flex; justify-content: space-between; padding: 7px 0; color: #5a3d2e; font-size: 15px; }
+.srow.t { margin-top: 8px; padding-top: 10px; border-top: 2px solid var(--dark); color: var(--dark); font: 800 21px Georgia, "Times New Roman", serif; }
+.panel .cta { margin-top: 14px; }
+.ghost { display: block; width: 100%; min-height: 48px; margin-top: 6px; border: 0; background: transparent; color: #7a5a48; font-weight: 700; }
+.done { text-align: center; padding: 14px 0 6px; }
+.done .code { margin: 8px 0; font: 800 36px ui-monospace, Menlo, monospace; letter-spacing: 4px; color: var(--red); }
+.who { margin: 14px 0 2px; }
+.who h4 { margin: 0 0 8px; font-size: 15px; color: #5a3d2e; }
+.who .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.who label { display: block; margin-bottom: 4px; font-size: 13px; font-weight: 700; color: #5a3d2e; }
+.who input { width: 100%; height: 50px; padding: 0 14px; border-radius: 14px; border: 1.5px solid #d9b99c; background: #fff; color: var(--dark); font: inherit; font-size: 16px; }
+.who input[aria-invalid=true] { border-color: var(--red); box-shadow: 0 0 0 3px rgba(232,48,26,.18); }
+.who .one { margin-top: 10px; }
+.who .err { min-height: 18px; margin: 6px 0 0; color: var(--red); font-weight: 700; font-size: 13.5px; }
+.flagsvg { display: inline-block; flex: none; width: 28px; height: 19px; border-radius: 3px; overflow: hidden; box-shadow: 0 0 0 1px rgba(0,0,0,.25); }
+.flagsvg svg { display: block; width: 100%; height: 100%; }
+.pill-btn .flagsvg { width: 26px; height: 18px; }
+.lang { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 14px; border-radius: 16px; border: 1.5px solid var(--line); background: rgba(255,255,255,.04); font-weight: 700; font-size: 17px; text-align: left; }
+.lang[aria-pressed=true] { border-color: var(--neon); background: rgba(255,138,76,.16); box-shadow: 0 0 14px rgba(255,138,76,.35); }
+.lang .tick { margin-left: auto; color: var(--neon); font-size: 20px; opacity: 0; }
+.lang[aria-pressed=true] .tick { opacity: 1; }
+.imp { margin: 6px 0 10px; }
+.imp[hidden] { display: none; }
+.imp div { margin-bottom: 8px; }
+.imp b { display: block; color: var(--ink); font-size: 12.5px; }
+.copy { margin: 10px 0 0; font-size: 12.5px; }
+.pagefoot { margin: 22px 14px 0; padding: 18px 16px; border-radius: 20px; background: rgba(15,4,3,.82); border: 1px solid var(--line); color: var(--muted); font-size: 13.5px; }
+.pagefoot h4 { margin: 0 0 10px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--neon); }
+.pagefoot .imp { margin: 0; }
+.bar { justify-content: flex-start; }
+.pill-btn .code { font-weight: 800; letter-spacing: .02em; }
+.langwrap { position: relative; }
+.langmenu { position: absolute; left: 0; top: 52px; z-index: 6; min-width: 200px; padding: 6px; border-radius: 18px; background: rgba(20,6,4,.97); border: 1.5px solid var(--line); box-shadow: 0 12px 32px rgba(0,0,0,.55); }
+.langmenu[hidden] { display: none; }
+.langmenu .lang { width: 100%; min-height: 48px; padding: 0 12px; border-color: transparent; background: none; box-shadow: none; font-size: 16px; color: var(--ink); }
+.langmenu .lang[aria-pressed=true] { background: rgba(255,138,76,.18); border-color: transparent; box-shadow: none; }
+.pagefoot .demo { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; font-style: italic; }
+.grp { display: flex; gap: 8px; }
+.grp .round-btn { width: 44px; height: 44px; }
+.toast { position: absolute; left: 16px; right: 16px; top: 16px; z-index: 12; background: #fff; color: var(--dark); padding: 12px 14px; border-radius: 12px; font-size: 14px; font-weight: 600; opacity: 0; transform: translateY(-8px); pointer-events: none; transition: opacity .2s, transform .2s; box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+.toast.show { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; scroll-behavior: auto !important; transition: none !important; } }
+
+/* ---------- note a lato ---------- */
+.notes h2 { margin: 0 0 6px; font-size: 22px; }
+.notes > p { margin: 0 0 16px; color: var(--muted); }
+.change { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 14px 0; border-top: 1px solid rgba(255,138,76,.22); }
+.change .n { width: 32px; height: 32px; border-radius: 50%; background: var(--red); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 14px; box-shadow: 0 0 12px rgba(232,48,26,.6); }
+.change h3 { margin: 0 0 2px; font-size: 16.5px; }
+.change p { margin: 0; color: var(--muted); font-size: 14.5px; }
+.change p b { color: var(--ink); font-weight: 600; }
+.todo { margin-top: 18px; padding: 14px 16px; border-radius: 14px; background: #1b0d09; border: 1px solid rgba(255,138,76,.22); }
+.todo h3 { margin: 0 0 6px; font-size: 15px; }
+.todo ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+
+/* ---------- versione a schermo intero ---------- */
+html, body { height: 100%; margin: 0; }
+.stage { display: block; max-width: none; margin: 0; padding: 0; }
+.phone { width: 100%; max-width: 480px; height: 100vh; height: 100dvh; min-height: 0; margin: 0 auto; border: 0; border-radius: 0; box-shadow: none; }
+.top { padding-top: calc(14px + env(safe-area-inset-top)); }
+.dock { padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
+.screen { padding-bottom: 150px; }
+</style>
+</head>
+<body>
+
+<main class="stage">
+  <section class="phone" aria-label="Anteprima della pagina sul telefono">
+    <div class="screen" id="screen">
+
+      <div class="top">
+        <div class="bar">
+          <div class="langwrap">
+            <button class="pill-btn" id="langbtn" aria-haspopup="true" aria-expanded="false" aria-controls="langmenu" data-i18n-aria="lang_aria"><span class="flagsvg" id="curflag"></span><span class="code" id="curcode">IT</span><span aria-hidden="true">▾</span></button>
+            <div class="langmenu" id="langmenu" hidden></div>
+          </div>
+        </div>
+        <div class="sign" role="img" aria-label="Maremma che Pizza!">
+          <svg class="neonpizza" viewBox="0 0 120 82" aria-hidden="true">
+            <path class="neon" d="M10 62 A50 50 0 0 1 110 62 Z"/>
+            <path class="neon" d="M60 62 L40 14 M60 62 L86 18"/>
+            <circle class="neon" cx="36" cy="46" r="4"/><circle class="neon" cx="56" cy="36" r="4"/><circle class="neon" cx="76" cy="48" r="4"/><circle class="neon" cx="94" cy="56" r="3"/><circle class="neon" cx="24" cy="57" r="3"/>
+          </svg>
+          <span class="logo-1"><span class="flick">M</span>aremma</span>
+          <span class="logo-2">che Pizza!</span>
+        </div>
+      </div>
+
+      <div class="headline">
+        <h2 data-i18n-html="h1">🍕 Prenota il tuo ordine e vieni a <span>ritirarlo</span> 🍕</h2>
+        <span class="status"><i></i><span data-i18n="status">Aperto ora · pronto in ~20 min</span></span>
+        <button class="cta" id="cta" data-i18n="cta">Ordina ora</button>
+        <div class="facts">
+          <div class="fact"><b>18:30–23:00</b><span data-i18n="f_today">Oggi</span></div>
+          <div class="fact"><b data-i18n="f_pick">Ritiro</b><span data-i18n="f_pickin">In pizzeria</span></div>
+          <div class="fact"><b>~20 min</b><span data-i18n="f_prep">Preparazione</span></div>
+        </div>
+      </div>
+
+      <div class="when">
+        <h3 data-i18n="when">Quando vuoi ritirarla?</h3>
+        <div class="slots" id="slots" role="group" data-i18n-aria="slots_aria"></div>
+      </div>
+
+      <nav class="cats" id="cats" data-i18n-aria="cats_aria">
+        <button class="chip" data-t="top" aria-current="true" data-i18n="cat_top">🔥 I più ordinati</button>
+        <button class="chip" data-t="pizze" aria-current="false" data-i18n="cat_pizze">Pizze</button>
+        <button class="chip" data-t="fritti" aria-current="false" data-i18n="cat_fritti">Fritti</button>
+        <button class="chip" data-t="bevande" aria-current="false" data-i18n="cat_bevande">Bevande</button>
+        <button class="chip" data-t="dolci" aria-current="false" data-i18n="cat_dolci">Dolci</button>
+      </nav>
+
+      <div id="menu"></div>
+      <footer class="pagefoot">
+        <h4>Maremma che Pizza!</h4>
+        <div class="imp" id="imp"></div>
+      </footer>
+    </div>
+
+    <div class="sheet" id="sheet" aria-hidden="true"><div class="panel" id="panel" role="dialog" aria-modal="true" data-i18n-aria="sheet_aria"></div></div>
+    <div class="pd" id="pd" aria-hidden="true" role="dialog" aria-modal="true">
+      <button class="pdx" id="pdx" type="button" data-i18n-aria="close">✕</button>
+      <div class="pdscroll" id="pdscroll"></div>
+      <div class="pdbar" id="pdbar"></div>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <div class="dock" id="dock"><button class="cart empty" id="cart"></button></div>
+  </section>
+
+  </main>
+
+<script>
+const LANGS = { it: { name: 'Italiano', locale: 'it-IT' }, en: { name: 'English', locale: 'en-GB' }, fr: { name: 'Français', locale: 'fr-FR' }, de: { name: 'Deutsch', locale: 'de-DE' } };
+const FLAGS = {
+  it: '<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" fill="#1f9d4a"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#d62828"/></svg>',
+  fr: '<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" fill="#1c3f94"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#e03a3e"/></svg>',
+  de: '<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="7" fill="#111"/><rect y="7" width="30" height="6.5" fill="#d62828"/><rect y="13.5" width="30" height="6.5" fill="#f5c400"/></svg>',
+  en: '<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#1c3f94"/><path d="M0 0L30 20M30 0L0 20" stroke="#fff" stroke-width="4"/><path d="M0 0L30 20M30 0L0 20" stroke="#d62828" stroke-width="1.6"/><path d="M15 0V20M0 10H30" stroke="#fff" stroke-width="6"/><path d="M15 0V20M0 10H30" stroke="#d62828" stroke-width="3.4"/></svg>',
+};
+const I18N = {
+  it: {
+    h1: "🍕 Prenota il tuo ordine e vieni a <span>ritirarlo</span> 🍕", status: "Aperto ora · pronto in ~20 min", cta: "Ordina ora",
+    f_today: "Oggi", f_pick: "Ritiro", f_pickin: "In pizzeria", f_prep: "Preparazione",
+    when: "Quando vuoi ritirarla?", asap: "Il prima possibile", slots_aria: "Orario di ritiro",
+    cat_top: "🔥 I più ordinati", cat_pizze: "Pizze", cat_fritti: "Fritti", cat_bevande: "Bevande", cat_dolci: "Dolci", cats_aria: "Categorie del menu",
+    b_classic: "Classica", b_hot: "Piccante 🌶", b_best: "Bestseller",
+    n_marg: "Margherita", n_diav: "Diavola", n_buf: "Bufala", n_mari: "Marinara", n_capr: "Capricciosa", n_fries: "Patatine fritte", n_suppli: "Supplì", n_beer: "Birra 33 cl", n_water: "Acqua 0,5 l", n_tira: "Tiramisù",
+    d_marg: "Pomodoro, mozzarella, basilico", d_diav: "Salame piccante, mozzarella", d_buf: "Mozzarella di bufala, pomodorini", d_mari: "Pomodoro, aglio, origano", d_capr: "Prosciutto, funghi, carciofi, olive",
+    d_fries: "Porzione abbondante", d_suppli: "Due pezzi, cuore filante", d_beer: "", d_water: "", d_tira: "Fatto in casa",
+    add: "Aggiungi {n}", remove: "Togli {n}",
+    empty: "Scegli le tue pizze per iniziare", view: "Vedi ordine", item1: "articolo", itemN: "articoli", open_aria: "Apri il riepilogo: {n} articoli, {tot}",
+    s_title: "Il tuo ordine", sheet_aria: "Riepilogo ordine", s_sub_asap: "Ritiro in pizzeria · il prima possibile (~20 min)", s_sub_at: "Ritiro in pizzeria · alle {t}",
+    pk_asap: "ritiro in ~20 min", pk_at: "ritiro alle {t}", s_subtotal: "Subtotale ({n} {w})", s_total: "Totale",
+    who: "Chi ritira l'ordine?", l_nome: "Nome", l_cognome: "Cognome", l_tel: "Telefono",
+    e_all: "Inserisci nome, cognome e telefono per il ritiro.", e_some: "Inserisci {x}.", p_nome: "il nome", p_cognome: "il cognome", p_tel: "un numero di telefono valido", and: " e ",
+    confirm: "Conferma ordine", keep: "Continua a ordinare", done_h: "Grazie, {n}! 🍕",
+    done_p: "Ordine a nome {n} {c}. Ti aspettiamo ({pick}). Ti chiamiamo al {tel} solo se serve. Conserva il codice.", demo: "(Schermata dimostrativa: nessun ordine reale)", close: "Chiudi",
+    toast_search: "Qui si apre la ricerca nel menu.", lang_aria: "Lingua", search_aria: "Cerca nel menu", home_aria: "Torna alla home", burger_aria: "Menu e informazioni",
+    m_title: "Menu", m_lang: "Lingua",
+    imp_l_company: "Ragione sociale", imp_v_company: "Maremma che Pizza! S.r.l.", imp_l_address: "Indirizzo", imp_v_address: "Via Esempio 1, 00000 Esempiopoli (XX), Italia", imp_l_vat: "Partita IVA", imp_v_vat: "IT00000000000",
+    imp_l_contact: "Contatti", imp_v_contact: "Tel. +39 000 000 0000 · info@example.com", imp_l_resp: "Responsabile dei contenuti", imp_v_resp: "Mario Rossi", imp_demo: "Dati di esempio", i_pom: "Pomodoro", i_moz: "Mozzarella", i_bas: "Basilico", i_sal: "Salame piccante", i_buf: "Mozzarella di bufala", i_cher: "Pomodorini", i_gar: "Aglio", i_ore: "Origano", i_ham: "Prosciutto", i_mush: "Funghi", i_art: "Carciofi", i_oli: "Olive", i_moz2: "Mozzarella extra", i_ru: "Rucola", i_gr: "Grana", i_chi: "Peperoncino", custom: "Personalizza", open_pd: "Apri {n}: foto, ingredienti ed extra", pd_incl_h: "Ingredienti", pd_incl_sub: "Tocca per togliere quelli che non vuoi", pd_incl: "Incluso", pd_removed: "Tolto", pd_extra_h: "Extra", pd_extra_sub: "Aggiungi quello che vuoi", pd_add: "Aggiungi · {tot}", pd_added: "Aggiunto all'ordine: {n}", m_no: "senza",
+  },
+  en: {
+    h1: "🍕 Order ahead and come to <span>collect it</span> 🍕", status: "Open now · ready in ~20 min", cta: "Order now",
+    f_today: "Today", f_pick: "Pickup", f_pickin: "At the pizzeria", f_prep: "Prep time",
+    when: "When do you want to pick it up?", asap: "As soon as possible", slots_aria: "Pickup time",
+    cat_top: "🔥 Most ordered", cat_pizze: "Pizzas", cat_fritti: "Fried", cat_bevande: "Drinks", cat_dolci: "Desserts", cats_aria: "Menu categories",
+    b_classic: "Classic", b_hot: "Spicy 🌶", b_best: "Bestseller",
+    n_marg: "Margherita", n_diav: "Diavola", n_buf: "Bufala", n_mari: "Marinara", n_capr: "Capricciosa", n_fries: "French fries", n_suppli: "Supplì", n_beer: "Beer 33 cl", n_water: "Water 0.5 l", n_tira: "Tiramisù",
+    d_marg: "Tomato, mozzarella, basil", d_diav: "Spicy salami, mozzarella", d_buf: "Buffalo mozzarella, cherry tomatoes", d_mari: "Tomato, garlic, oregano", d_capr: "Ham, mushrooms, artichokes, olives",
+    d_fries: "Generous portion", d_suppli: "Two pieces, melty centre", d_beer: "", d_water: "", d_tira: "Homemade",
+    add: "Add {n}", remove: "Remove {n}",
+    empty: "Pick your pizzas to get started", view: "View order", item1: "item", itemN: "items", open_aria: "Open summary: {n} items, {tot}",
+    s_title: "Your order", sheet_aria: "Order summary", s_sub_asap: "Pickup at the pizzeria · as soon as possible (~20 min)", s_sub_at: "Pickup at the pizzeria · at {t}",
+    pk_asap: "pickup in ~20 min", pk_at: "pickup at {t}", s_subtotal: "Subtotal ({n} {w})", s_total: "Total",
+    who: "Who is picking up?", l_nome: "First name", l_cognome: "Last name", l_tel: "Phone",
+    e_all: "Enter first name, last name and phone for pickup.", e_some: "Enter {x}.", p_nome: "your first name", p_cognome: "your last name", p_tel: "a valid phone number", and: " and ",
+    confirm: "Place order", keep: "Keep ordering", done_h: "Thank you, {n}! 🍕",
+    done_p: "Order for {n} {c}. See you soon ({pick}). We will call {tel} only if needed. Keep your code.", demo: "(Demo screen: no real order)", close: "Close",
+    toast_search: "The menu search opens here.", lang_aria: "Language", search_aria: "Search the menu", home_aria: "Back to home", burger_aria: "Menu and information",
+    m_title: "Menu", m_lang: "Language",
+    imp_l_company: "Company name", imp_v_company: "Maremma che Pizza! S.r.l.", imp_l_address: "Address", imp_v_address: "Via Esempio 1, 00000 Esempiopoli (XX), Italy", imp_l_vat: "VAT ID", imp_v_vat: "IT00000000000",
+    imp_l_contact: "Contact", imp_v_contact: "Phone +39 000 000 0000 · info@example.com", imp_l_resp: "Responsible for content", imp_v_resp: "Mario Rossi", imp_demo: "Sample data", i_pom: "Tomato", i_moz: "Mozzarella", i_bas: "Basil", i_sal: "Spicy salami", i_buf: "Buffalo mozzarella", i_cher: "Cherry tomatoes", i_gar: "Garlic", i_ore: "Oregano", i_ham: "Ham", i_mush: "Mushrooms", i_art: "Artichokes", i_oli: "Olives", i_moz2: "Extra mozzarella", i_ru: "Rocket", i_gr: "Parmesan", i_chi: "Chilli", custom: "Customise", open_pd: "Open {n}: photo, ingredients and extras", pd_incl_h: "Ingredients", pd_incl_sub: "Tap to remove what you don't want", pd_incl: "Included", pd_removed: "Removed", pd_extra_h: "Extras", pd_extra_sub: "Add whatever you like", pd_add: "Add · {tot}", pd_added: "Added to order: {n}", m_no: "no",
+  },
+  fr: {
+    h1: "🍕 Commande à l’avance et viens la <span>retirer</span> 🍕", status: "Ouvert · prêt en ~20 min", cta: "Commander",
+    f_today: "Aujourd’hui", f_pick: "Retrait", f_pickin: "À la pizzeria", f_prep: "Préparation",
+    when: "Quand veux-tu la retirer ?", asap: "Dès que possible", slots_aria: "Heure de retrait",
+    cat_top: "🔥 Les plus commandées", cat_pizze: "Pizzas", cat_fritti: "Fritures", cat_bevande: "Boissons", cat_dolci: "Desserts", cats_aria: "Catégories du menu",
+    b_classic: "Classique", b_hot: "Piquante 🌶", b_best: "Best-seller",
+    n_marg: "Margherita", n_diav: "Diavola", n_buf: "Bufala", n_mari: "Marinara", n_capr: "Capricciosa", n_fries: "Frites", n_suppli: "Supplì", n_beer: "Bière 33 cl", n_water: "Eau 0,5 l", n_tira: "Tiramisù",
+    d_marg: "Tomate, mozzarella, basilic", d_diav: "Salami piquant, mozzarella", d_buf: "Mozzarella di bufala, tomates cerises", d_mari: "Tomate, ail, origan", d_capr: "Jambon, champignons, artichauts, olives",
+    d_fries: "Portion généreuse", d_suppli: "Deux pièces, cœur fondant", d_beer: "", d_water: "", d_tira: "Fait maison",
+    add: "Ajouter {n}", remove: "Retirer {n}",
+    empty: "Choisis tes pizzas pour commencer", view: "Voir la commande", item1: "article", itemN: "articles", open_aria: "Ouvrir le récapitulatif : {n} articles, {tot}",
+    s_title: "Ta commande", sheet_aria: "Récapitulatif de la commande", s_sub_asap: "Retrait à la pizzeria · dès que possible (~20 min)", s_sub_at: "Retrait à la pizzeria · à {t}",
+    pk_asap: "retrait dans ~20 min", pk_at: "retrait à {t}", s_subtotal: "Sous-total ({n} {w})", s_total: "Total",
+    who: "Qui retire la commande ?", l_nome: "Prénom", l_cognome: "Nom", l_tel: "Téléphone",
+    e_all: "Indique prénom, nom et téléphone pour le retrait.", e_some: "Indique {x}.", p_nome: "ton prénom", p_cognome: "ton nom", p_tel: "un numéro de téléphone valide", and: " et ",
+    confirm: "Confirmer la commande", keep: "Continuer à commander", done_h: "Merci, {n} ! 🍕",
+    done_p: "Commande au nom de {n} {c}. À bientôt ({pick}). Nous t’appelons au {tel} uniquement si nécessaire. Garde ton code.", demo: "(Écran de démonstration : aucune vraie commande)", close: "Fermer",
+    toast_search: "La recherche dans le menu s’ouvre ici.", lang_aria: "Langue", search_aria: "Rechercher dans le menu", home_aria: "Retour à l’accueil", burger_aria: "Menu et informations",
+    m_title: "Menu", m_lang: "Langue",
+    imp_l_company: "Raison sociale", imp_v_company: "Maremma che Pizza! S.r.l.", imp_l_address: "Adresse", imp_v_address: "Via Esempio 1, 00000 Esempiopoli (XX), Italie", imp_l_vat: "N° de TVA", imp_v_vat: "IT00000000000",
+    imp_l_contact: "Contact", imp_v_contact: "Tél. +39 000 000 0000 · info@example.com", imp_l_resp: "Responsable du contenu", imp_v_resp: "Mario Rossi", imp_demo: "Données d’exemple", i_pom: "Tomate", i_moz: "Mozzarella", i_bas: "Basilic", i_sal: "Salami piquant", i_buf: "Mozzarella di bufala", i_cher: "Tomates cerises", i_gar: "Ail", i_ore: "Origan", i_ham: "Jambon", i_mush: "Champignons", i_art: "Artichauts", i_oli: "Olives", i_moz2: "Mozzarella en plus", i_ru: "Roquette", i_gr: "Parmesan", i_chi: "Piment", custom: "Personnaliser", open_pd: "Ouvrir {n} : photo, ingrédients et suppléments", pd_incl_h: "Ingrédients", pd_incl_sub: "Touchez pour retirer ce que vous ne voulez pas", pd_incl: "Inclus", pd_removed: "Retiré", pd_extra_h: "Suppléments", pd_extra_sub: "Ajoutez ce que vous voulez", pd_add: "Ajouter · {tot}", pd_added: "Ajouté à la commande : {n}", m_no: "sans",
+  },
+  de: {
+    h1: "🍕 Bestelle vor und <span>hol deine Pizza ab</span> 🍕", status: "Jetzt geöffnet · fertig in ~20 Min.", cta: "Jetzt bestellen",
+    f_today: "Heute", f_pick: "Abholung", f_pickin: "In der Pizzeria", f_prep: "Zubereitung",
+    when: "Wann möchtest du abholen?", asap: "So bald wie möglich", slots_aria: "Abholzeit",
+    cat_top: "🔥 Am beliebtesten", cat_pizze: "Pizzen", cat_fritti: "Frittiertes", cat_bevande: "Getränke", cat_dolci: "Desserts", cats_aria: "Menükategorien",
+    b_classic: "Klassiker", b_hot: "Scharf 🌶", b_best: "Bestseller",
+    n_marg: "Margherita", n_diav: "Diavola", n_buf: "Bufala", n_mari: "Marinara", n_capr: "Capricciosa", n_fries: "Pommes frites", n_suppli: "Supplì", n_beer: "Bier 0,33 l", n_water: "Wasser 0,5 l", n_tira: "Tiramisù",
+    d_marg: "Tomaten, Mozzarella, Basilikum", d_diav: "Scharfe Salami, Mozzarella", d_buf: "Büffelmozzarella, Kirschtomaten", d_mari: "Tomaten, Knoblauch, Oregano", d_capr: "Schinken, Pilze, Artischocken, Oliven",
+    d_fries: "Große Portion", d_suppli: "Zwei Stück, mit zartschmelzendem Kern", d_beer: "", d_water: "", d_tira: "Hausgemacht",
+    add: "{n} hinzufügen", remove: "{n} entfernen",
+    empty: "Wähle deine Pizzen aus", view: "Bestellung ansehen", item1: "Artikel", itemN: "Artikel", open_aria: "Zusammenfassung öffnen: {n} Artikel, {tot}",
+    s_title: "Deine Bestellung", sheet_aria: "Bestellübersicht", s_sub_asap: "Abholung in der Pizzeria · so bald wie möglich (~20 Min.)", s_sub_at: "Abholung in der Pizzeria · um {t} Uhr",
+    pk_asap: "Abholung in ~20 Min.", pk_at: "Abholung um {t} Uhr", s_subtotal: "Zwischensumme ({n} {w})", s_total: "Gesamt",
+    who: "Wer holt die Bestellung ab?", l_nome: "Vorname", l_cognome: "Nachname", l_tel: "Telefon",
+    e_all: "Gib Vor- und Nachname sowie Telefon für die Abholung an.", e_some: "Gib {x} an.", p_nome: "deinen Vornamen", p_cognome: "deinen Nachnamen", p_tel: "eine gültige Telefonnummer", and: " und ",
+    confirm: "Bestellung abschicken", keep: "Weiter bestellen", done_h: "Danke, {n}! 🍕",
+    done_p: "Bestellung auf {n} {c}. Bis gleich ({pick}). Wir rufen {tel} nur bei Bedarf an. Bitte Code aufbewahren.", demo: "(Demobildschirm: keine echte Bestellung)", close: "Schließen",
+    toast_search: "Hier öffnet sich die Menüsuche.", lang_aria: "Sprache", search_aria: "Menü durchsuchen", home_aria: "Zur Startseite", burger_aria: "Menü und Informationen",
+    m_title: "Menü", m_lang: "Sprache",
+    imp_l_company: "Firmenname", imp_v_company: "Maremma che Pizza! S.r.l.", imp_l_address: "Anschrift", imp_v_address: "Via Esempio 1, 00000 Esempiopoli (XX), Italien", imp_l_vat: "USt-IdNr.", imp_v_vat: "IT00000000000",
+    imp_l_contact: "Kontakt", imp_v_contact: "Tel. +39 000 000 0000 · info@example.com", imp_l_resp: "Verantwortlich für den Inhalt", imp_v_resp: "Mario Rossi", imp_demo: "Beispieldaten", i_pom: "Tomaten", i_moz: "Mozzarella", i_bas: "Basilikum", i_sal: "Scharfe Salami", i_buf: "Büffelmozzarella", i_cher: "Kirschtomaten", i_gar: "Knoblauch", i_ore: "Oregano", i_ham: "Schinken", i_mush: "Pilze", i_art: "Artischocken", i_oli: "Oliven", i_moz2: "Extra Mozzarella", i_ru: "Rucola", i_gr: "Parmesan", i_chi: "Chili", custom: "Anpassen", open_pd: "{n} öffnen: Foto, Zutaten und Extras", pd_incl_h: "Zutaten", pd_incl_sub: "Tippen, um Zutaten wegzulassen", pd_incl: "Enthalten", pd_removed: "Weggelassen", pd_extra_h: "Extras", pd_extra_sub: "Nach Wunsch hinzufügen", pd_add: "Hinzufügen · {tot}", pd_added: "Zur Bestellung hinzugefügt: {n}", m_no: "ohne",
+  },
+};
+let lang = 'it';
+const t = (k, v = {}) => String(I18N[lang][k] ?? I18N.it[k] ?? k).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? '');
+const eur = (c) => (c / 100).toLocaleString(LANGS[lang].locale, { style: 'currency', currency: 'EUR' });
+
+const PIZZA = {
+  base: '<circle cx="50" cy="50" r="46" fill="#d9954a"/><circle cx="50" cy="50" r="40" fill="#c92f19"/><circle cx="50" cy="50" r="37" fill="#ffd266"/>',
+  marg: '<ellipse cx="34" cy="38" rx="8" ry="4.5" fill="#2f9b4a" transform="rotate(-30 34 38)"/><ellipse cx="62" cy="34" rx="8" ry="4.5" fill="#2f9b4a" transform="rotate(25 62 34)"/><ellipse cx="50" cy="64" rx="8" ry="4.5" fill="#2f9b4a" transform="rotate(10 50 64)"/><circle cx="68" cy="58" r="5" fill="#d83a22"/><circle cx="30" cy="60" r="5" fill="#d83a22"/>',
+  diav: '<circle cx="34" cy="36" r="8" fill="#b3200f"/><circle cx="62" cy="34" r="8" fill="#b3200f"/><circle cx="50" cy="56" r="8" fill="#b3200f"/><circle cx="70" cy="62" r="7" fill="#b3200f"/><circle cx="30" cy="62" r="7" fill="#b3200f"/><circle cx="62" cy="34" r="2" fill="#e65a3a"/><circle cx="34" cy="36" r="2" fill="#e65a3a"/>',
+  buf: '<circle cx="36" cy="38" r="9" fill="#fffaf0"/><circle cx="64" cy="40" r="9" fill="#fffaf0"/><circle cx="50" cy="62" r="9" fill="#fffaf0"/><circle cx="30" cy="62" r="4" fill="#d83a22"/><circle cx="70" cy="64" r="4" fill="#d83a22"/><ellipse cx="50" cy="40" rx="6" ry="3.5" fill="#2f9b4a"/>',
+  mari: '<circle cx="36" cy="40" r="3" fill="#fff3d0"/><circle cx="60" cy="36" r="3" fill="#fff3d0"/><circle cx="50" cy="58" r="3" fill="#fff3d0"/><circle cx="68" cy="56" r="3" fill="#fff3d0"/><circle cx="32" cy="58" r="3" fill="#fff3d0"/>',
+  capr: '<circle cx="34" cy="38" r="6" fill="#e48a8a"/><circle cx="62" cy="36" r="6" fill="#8a6a50"/><circle cx="50" cy="60" r="5" fill="#2a2a2a"/><circle cx="70" cy="58" r="5" fill="#2a2a2a"/><path d="M28 58l8 4-4 8z" fill="#7da35a"/>',
+};
+const pizzaArt = (k) => `<svg viewBox="0 0 100 100" aria-hidden="true">${PIZZA.base}${PIZZA[k]}</svg>`;
+const MENU = [
+  { id: 'top', items: [{ k: 'marg', p: 650, art: 'marg', badge: 'b_classic' }, { k: 'diav', p: 800, art: 'diav', badge: 'b_hot', hot: 1 }, { k: 'buf', p: 950, art: 'buf', badge: 'b_best' }] },
+  { id: 'pizze', items: [{ k: 'mari', p: 550, art: 'mari' }, { k: 'capr', p: 900, art: 'capr' }] },
+  { id: 'fritti', items: [{ k: 'fries', p: 350, emoji: '🍟' }, { k: 'suppli', p: 400, emoji: '🧆' }] },
+  { id: 'bevande', items: [{ k: 'beer', p: 350, emoji: '🍺', drink: 1 }, { k: 'water', p: 150, emoji: '💧', drink: 1 }] },
+  { id: 'dolci', items: [{ k: 'tira', p: 500, emoji: '🍰' }] },
+];
+// La sezione Pizze contiene tutte le pizze, comprese quelle più ordinate mostrate in alto
+MENU.find((c) => c.id === 'pizze').items.unshift(...MENU.find((c) => c.id === 'top').items);
+const cart = {};
+const root = document.getElementById('menu');
+const $ = (id) => document.getElementById(id);
+
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) { if (k === 'class') e.className = v; else if (k === 'html') e.innerHTML = v; else if (k.startsWith('on')) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v); }
+  for (const kid of kids.flat()) e.append(kid.nodeType ? kid : document.createTextNode(kid));
+  return e;
+}
+const bigArt = (k) => `<svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="104" cy="108" r="88" fill="#000" opacity=".35"/><circle cx="100" cy="100" r="88" fill="#d9954a"/><circle cx="100" cy="100" r="80" fill="#c92f19"/><circle cx="100" cy="100" r="75" fill="#f4bb40"/><ellipse cx="78" cy="70" rx="40" ry="26" fill="#ffe08a" opacity=".45"/><g transform="translate(100 100) scale(2) translate(-50 -50)">${PIZZA[k]}</g><path d="M100 26V174M26 100H174M48 48L152 152M152 48L48 152" stroke="rgba(255,240,200,.5)" stroke-width="1.6"/></svg>`;
+function render() {
+  root.replaceChildren();
+  for (const cat of MENU) {
+    const sec = el('section', { class: 'sec', id: 'sec-' + cat.id }, el('h3', {}, t('cat_' + cat.id)));
+    for (const it of cat.items) {
+      const name = t('n_' + it.k), desc = t('d_' + it.k), detail = !!it.base;
+      const q = Object.values(cart).filter((e) => e.k === it.k).reduce((a, e) => a + e.qty, 0);
+      const minusKey = () => (cart[it.k] ? it.k : Object.keys(cart).filter((x) => cart[x].k === it.k).pop());
+      const ctrl = el('div', { class: 'qty' },
+        q ? el('button', { class: 'minus', type: 'button', 'aria-label': t('remove', { n: name }), onclick: () => change(minusKey(), it, -1) }, '−') : '',
+        q ? el('span', {}, String(q)) : '',
+        el('button', { type: 'button', 'aria-label': t('add', { n: name }), onclick: () => change(it.k, it, 1) }, '+'));
+      const title = detail
+        ? el('h4', {}, el('button', { class: 'dname', type: 'button', 'aria-haspopup': 'dialog', 'aria-label': t('open_pd', { n: name }), onclick: (e) => { e.stopPropagation(); openPd(it); } }, name))
+        : el('h4', {}, name);
+      const card = el('div', { class: 'dish' + (detail ? ' tap' : '') },
+        el('div', { class: 'pic', 'aria-hidden': 'true', html: it.art ? pizzaArt(it.art) : '' }, it.art ? '' : it.emoji),
+        el('div', { class: 'txt' },
+          it.badge ? el('span', { class: 'badge' + (it.hot ? ' hot' : '') }, t(it.badge)) : '',
+          title, el('p', {}, desc || ' '),
+          detail ? el('span', { class: 'hint2', 'aria-hidden': 'true' }, t('custom') + ' ›') : ''),
+        el('div', { class: 'foot' }, el('span', { class: 'price' }, eur(it.p)), ctrl));
+      if (detail) card.addEventListener('click', (e) => { if (!e.target.closest('.qty')) openPd(it); });
+      sec.append(card);
+    }
+    root.append(sec);
+  }
+}
+function change(key, it, d) {
+  const cur = cart[key], q = (cur?.qty || 0) + d;
+  if (q <= 0) delete cart[key];
+  else cart[key] = cur ? { ...cur, qty: q } : { qty: q, p: it.p, drink: !!it.drink, k: it.k, art: it.art, emoji: it.emoji, rem: [], add: [] };
+  render(); dock();
+  if (!Object.keys(cart).length) closeSheet(); else if ($('sheet').classList.contains('open')) renderSheet();
+}
+/* ---------- scheda pizza a schermo intero: ingredienti da togliere ed extra da aggiungere ---------- */
+const PBASE = { marg: ['pom', 'moz', 'bas'], diav: ['sal', 'moz'], buf: ['buf', 'cher'], mari: ['pom', 'gar', 'ore'], capr: ['ham', 'mush', 'art', 'oli'] };
+const EXTRAS = [{ id: 'moz2', p: 150 }, { id: 'buf', p: 200 }, { id: 'ham', p: 150 }, { id: 'sal', p: 150 }, { id: 'mush', p: 100 }, { id: 'oli', p: 100 }, { id: 'ru', p: 100 }, { id: 'gr', p: 100 }, { id: 'chi', p: 50 }];
+MENU.forEach((c) => c.items.forEach((i) => { if (PBASE[i.k]) i.base = PBASE[i.k]; }));
+let pd = null;
+const pdPrice = () => pd.it.p + [...pd.add].reduce((a, id) => a + EXTRAS.find((x) => x.id === id).p, 0);
+function openPd(it) {
+  pd = { it, rem: new Set(), add: new Set(), qty: 1 };
+  renderPd(); $('pdscroll').scrollTop = 0;
+  $('pd').classList.add('open'); $('pd').setAttribute('aria-hidden', 'false'); $('pdx').focus({ preventScroll: true });
+}
+function closePd() { if (!pd) return; pd = null; $('pd').classList.remove('open'); $('pd').setAttribute('aria-hidden', 'true'); }
+function renderPd(f) {
+  const it = pd.it, name = t('n_' + it.k), extras = EXTRAS.filter((x) => !it.base.includes(x.id));
+  let n = 0;
+  const row = (label, on, tail, base, fn) => {
+    const i = n++;
+    return el('button', { class: 'prow' + (on ? ' on' : '') + (base ? ' base' : ''), type: 'button', 'aria-pressed': String(on), onclick: () => { fn(); renderPd(i); } },
+      el('span', { class: 'chk', 'aria-hidden': 'true' }, on ? '✓' : ''), el('span', { class: 'pl' }, label), el('span', { class: 'pt' }, tail));
+  };
+  const flip = (set, id) => { if (set.has(id)) set.delete(id); else set.add(id); };
+  $('pdscroll').replaceChildren(
+    el('div', { class: 'pdpic', 'aria-hidden': 'true', html: bigArt(it.art) }),
+    el('div', { class: 'pdbody' },
+      it.badge ? el('span', { class: 'badge' + (it.hot ? ' hot' : '') }, t(it.badge)) : '',
+      el('h2', {}, name), el('div', { class: 'price' }, eur(pdPrice())), el('p', { class: 'desc' }, t('d_' + it.k))),
+    el('section', { class: 'pdsec' }, el('h3', {}, t('pd_incl_h')), el('p', {}, t('pd_incl_sub')),
+      ...it.base.map((id) => row(t('i_' + id), !pd.rem.has(id), pd.rem.has(id) ? t('pd_removed') : t('pd_incl'), true, () => flip(pd.rem, id)))),
+    el('section', { class: 'pdsec' }, el('h3', {}, t('pd_extra_h')), el('p', {}, t('pd_extra_sub')),
+      ...extras.map((x) => row(t('i_' + x.id), pd.add.has(x.id), '+ ' + eur(x.p), false, () => flip(pd.add, x.id)))));
+  $('pdbar').replaceChildren(
+    el('div', { class: 'qty' },
+      el('button', { class: 'minus', type: 'button', 'data-f': 'qm', 'aria-label': t('remove', { n: name }), onclick: () => { if (pd.qty > 1) { pd.qty--; renderPd('qm'); } } }, '−'),
+      el('span', {}, String(pd.qty)),
+      el('button', { type: 'button', 'data-f': 'qp', 'aria-label': t('add', { n: name }), onclick: () => { if (pd.qty < 20) { pd.qty++; renderPd('qp'); } } }, '+')),
+    el('button', { class: 'pdadd', type: 'button', onclick: pdAddToCart }, t('pd_add', { tot: eur(pdPrice() * pd.qty) })));
+  if (typeof f === 'number') $('pdscroll').querySelectorAll('.prow')[f]?.focus({ preventScroll: true });
+  else if (f) $('pdbar').querySelector('[data-f=' + f + ']')?.focus();
+}
+function pdAddToCart() {
+  const it = pd.it, rem = [...pd.rem].sort(), add = [...pd.add].sort(), sig = rem.join(',') + '|' + add.join(',');
+  const key = sig === '|' ? it.k : it.k + '#' + sig, cur = cart[key], name = t('n_' + it.k);
+  cart[key] = cur ? { ...cur, qty: cur.qty + pd.qty } : { qty: pd.qty, p: pdPrice(), drink: false, k: it.k, art: it.art, emoji: it.emoji, rem, add };
+  closePd(); render(); dock();
+  if ($('sheet').classList.contains('open')) renderSheet();
+  toast(t('pd_added', { n: name }));
+}
+let slot = 'asap', hadItems = false;
+const cust = { nome: '', cognome: '', tel: '' };
+const count = () => Object.values(cart).reduce((a, c) => a + c.qty, 0);
+const total = () => Object.values(cart).reduce((a, c) => a + c.qty * c.p, 0);
+const words = (n) => (n === 1 ? t('item1') : t('itemN'));
+const slotText = () => (slot === 'asap' ? t('pk_asap') : t('pk_at', { t: slot }));
+function dock() {
+  const n = count(), c = $('cart');
+  if (!n) {
+    hadItems = false; c.className = 'cart empty'; c.removeAttribute('aria-label');
+    c.replaceChildren(document.createTextNode('🍕 ' + t('empty')));
+    return;
+  }
+  const entries = Object.values(cart);
+  const thumbs = el('div', { class: 'thumbs' });
+  entries.slice(0, 2).forEach((e) => thumbs.append(el('span', { html: e.art ? pizzaArt(e.art) : '' }, e.art ? '' : e.emoji)));
+  c.className = 'cart';
+  c.replaceChildren(thumbs,
+    el('div', { class: 'mid' }, el('b', {}, t('view')), el('small', {}, `${n} ${words(n)}`)),
+    el('div', { class: 'go' }, eur(total()), el('i', { 'aria-hidden': 'true' }, '›')));
+  c.setAttribute('aria-label', t('open_aria', { n, tot: eur(total()) }));
+  if (!hadItems) { const d = $('dock'); d.classList.remove('enter'); void d.offsetWidth; d.classList.add('enter'); }
+  else { c.classList.remove('bump'); void c.offsetWidth; c.classList.add('bump'); }
+  hadItems = true;
+}
+function closeSheet() { $('sheet').classList.remove('open'); $('sheet').setAttribute('aria-hidden', 'true'); }
+function openSheet() { renderSheet(); $('sheet').classList.add('open'); $('sheet').setAttribute('aria-hidden', 'false'); }
+function renderSheet() {
+  const p = $('panel'), n = count();
+  const lines = Object.entries(cart).map(([key, e]) => {
+    const it = { k: e.k, p: e.p, drink: e.drink, art: e.art, emoji: e.emoji }, name = t('n_' + e.k);
+    const mods = [(e.rem || []).length ? t('m_no') + ' ' + e.rem.map((x) => t('i_' + x)).join(', ') : '', (e.add || []).length ? '+ ' + e.add.map((x) => t('i_' + x)).join(', ') : ''].filter(Boolean);
+    return el('div', { class: 'sline' },
+      el('div', {}, el('b', {}, name), ...mods.map((m) => el('small', { class: 'mods' }, m))),
+      el('div', { class: 'mini' },
+        el('button', { 'aria-label': t('remove', { n: name }), onclick: () => change(key, it, -1) }, '−'), el('span', {}, String(e.qty)),
+        el('button', { 'aria-label': t('add', { n: name }), onclick: () => change(key, it, 1) }, '+')),
+      el('span', { class: 'lp' }, eur(e.qty * e.p)));
+  });
+  const field = (id, label, key, ac) => {
+    const inp = el('input', { id, type: key === 'tel' ? 'tel' : 'text', inputmode: key === 'tel' ? 'tel' : 'text', autocomplete: ac, autocapitalize: key === 'tel' ? 'off' : 'words', maxlength: '40', required: '', value: cust[key] });
+    inp.addEventListener('input', () => { cust[key] = inp.value; inp.removeAttribute('aria-invalid'); $('who-err').textContent = ''; });
+    return el('div', {}, el('label', { for: id }, label), inp);
+  };
+  p.replaceChildren(el('div', { class: 'grab' }), el('h3', {}, t('s_title')),
+    el('p', { class: 'sub' }, slot === 'asap' ? t('s_sub_asap') : t('s_sub_at', { t: slot })),
+    ...lines,
+    el('div', { class: 'srow' }, el('span', {}, t('s_subtotal', { n, w: words(n) })), el('span', {}, eur(total()))),
+    el('div', { class: 'srow t' }, el('span', {}, t('s_total')), el('span', {}, eur(total()))),
+    el('div', { class: 'who' }, el('h4', {}, t('who')),
+      el('div', { class: 'two' }, field('f-nome', t('l_nome'), 'nome', 'given-name'), field('f-cognome', t('l_cognome'), 'cognome', 'family-name')),
+      el('div', { class: 'one' }, field('f-tel', t('l_tel'), 'tel', 'tel')),
+      el('p', { class: 'err', id: 'who-err', role: 'alert' })),
+    el('button', { class: 'cta', onclick: confirmOrder }, t('confirm')),
+    el('button', { class: 'ghost', onclick: closeSheet }, t('keep')));
+}
+function confirmOrder() {
+  const nome = cust.nome.trim(), cognome = cust.cognome.trim(), tel = cust.tel.trim(), digits = tel.replace(/\D/g, '');
+  const bad = [];
+  if (nome.length < 2) bad.push(['f-nome', t('p_nome')]);
+  if (cognome.length < 2) bad.push(['f-cognome', t('p_cognome')]);
+  if (!/^[+\d\s().-]+$/.test(tel) || digits.length < 9 || digits.length > 15) bad.push(['f-tel', t('p_tel')]);
+  if (bad.length) {
+    bad.forEach(([id]) => $(id).setAttribute('aria-invalid', 'true'));
+    $('who-err').textContent = bad.length === 3 ? t('e_all') : t('e_some', { x: bad.map((b) => b[1]).join(t('and')) });
+    $(bad[0][0]).focus();
+    return;
+  }
+  const code = Math.random().toString(16).slice(2, 8).toUpperCase();
+  const pick = slotText();
+  for (const k of Object.keys(cart)) delete cart[k];
+  render(); dock();
+  $('panel').replaceChildren(el('div', { class: 'grab' }), el('div', { class: 'done' },
+    el('h3', {}, t('done_h', { n: nome })), el('div', { class: 'code' }, code),
+    el('p', { class: 'sub' }, t('done_p', { n: nome, c: cognome, pick, tel })),
+    el('p', { class: 'sub' }, t('demo'))),
+    el('button', { class: 'cta', onclick: closeSheet }, t('close')));
+}
+function toast(msg) { const x = $('toast'); x.textContent = msg; x.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => x.classList.remove('show'), 2400); }
+
+/* ---------- menu laterale: lingua + impressum ---------- */
+function closeLangMenu() { $('langmenu').hidden = true; $('langbtn').setAttribute('aria-expanded', 'false'); }
+function toggleLangMenu() { const open = $('langmenu').hidden; $('langmenu').hidden = !open; $('langbtn').setAttribute('aria-expanded', String(open)); }
+function renderLangs() {
+  $('langmenu').replaceChildren(...Object.entries(LANGS).map(([code, L]) => {
+    const b = el('button', { class: 'lang', 'aria-pressed': String(code === lang), lang: code },
+      el('span', { class: 'flagsvg', html: FLAGS[code] }), L.name, el('span', { class: 'tick', 'aria-hidden': 'true' }, '✓'));
+    b.addEventListener('click', () => { applyLang(code); closeLangMenu(); });
+    return b;
+  }));
+}
+function renderFooter() {
+  $('imp').replaceChildren(...['company', 'address', 'vat', 'contact', 'resp'].map((k) => el('div', {}, el('b', {}, t('imp_l_' + k)), t('imp_v_' + k))), el('p', { class: 'demo' }, t('imp_demo')));
+}
+function applyLang(code) {
+  lang = code; document.documentElement.lang = code;
+  document.querySelectorAll('[data-i18n]').forEach((n) => { n.textContent = t(n.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-html]').forEach((n) => { n.innerHTML = t(n.dataset.i18nHtml); });
+  document.querySelectorAll('[data-i18n-aria]').forEach((n) => { n.setAttribute('aria-label', t(n.dataset.i18nAria)); });
+  $('curflag').innerHTML = FLAGS[code]; $('curcode').textContent = code.toUpperCase();
+  renderSlots(); render(); dock(); renderLangs(); renderFooter();
+  if ($('sheet').classList.contains('open')) renderSheet();
+  if (pd) renderPd();
+}
+function renderSlots() {
+  $('slots').replaceChildren(...['asap', '20:00', '20:15', '20:30', '20:45', '21:00'].map((v) => {
+    const b = el('button', { class: 'slot', 'aria-pressed': String(v === slot) }, v === 'asap' ? t('asap') : v);
+    b.addEventListener('click', () => { slot = v; renderSlots(); dock(); if ($('sheet').classList.contains('open')) renderSheet(); });
+    return b;
+  }));
+}
+
+const screen = $('screen');
+function goTo(id) { const s = $('sec-' + id); if (s) screen.scrollTo({ top: s.offsetTop - 70, behavior: 'smooth' }); }
+$('cta').addEventListener('click', () => goTo('top'));
+$('cart').addEventListener('click', () => (count() ? openSheet() : goTo('top')));
+$('sheet').addEventListener('click', (e) => { if (e.target.id === 'sheet') closeSheet(); });
+$('langbtn').addEventListener('click', toggleLangMenu);
+$('pdx').addEventListener('click', closePd);
+document.addEventListener('click', (e) => { if (!e.target.closest('.langwrap')) closeLangMenu(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (pd) closePd(); else closeSheet(); closeLangMenu(); } });
+document.querySelectorAll('.chip').forEach((c) => c.addEventListener('click', () => {
+  document.querySelectorAll('.chip').forEach((x) => x.setAttribute('aria-current', 'false'));
+  c.setAttribute('aria-current', 'true'); goTo(c.dataset.t);
+}));
+applyLang('it');
+</script>
+</body>
+</html>
