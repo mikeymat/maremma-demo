@@ -99,6 +99,18 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .dish .txt p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 12.5px; }
 .dish .badge { margin-bottom: 2px; padding: 0 8px; font-size: 10.5px; }
 .dish .hint2 { margin-top: 2px; font-size: 12px; }
+.stick { position: sticky; top: 0; z-index: 3; padding-top: 12px; background: linear-gradient(rgba(42,8,5,.97) 82%, transparent); }
+.stick .cats { position: static; z-index: auto; padding: 8px 14px 8px; background: none; }
+.cats[hidden] { display: none; }
+.search { position: relative; margin: 0 14px; }
+.search svg { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; stroke: var(--neon); fill: none; stroke-width: 2.2; stroke-linecap: round; pointer-events: none; }
+.search input { -webkit-appearance: none; appearance: none; width: 100%; height: 48px; padding: 0 46px 0 46px; border-radius: 999px; border: 1.5px solid var(--line); background: rgba(15,4,3,.92); color: var(--ink); font: 500 16px/1 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; box-shadow: 0 0 14px rgba(255,138,76,.18); outline: none; }
+.search input::placeholder { color: #c9a996; }
+.search input:focus { border-color: var(--neon); box-shadow: 0 0 0 3px rgba(255,138,76,.28), 0 0 18px rgba(255,138,76,.35); }
+.search input::-webkit-search-cancel-button, .search input::-webkit-search-decoration { -webkit-appearance: none; display: none; }
+.qclear { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border: 0; border-radius: 50%; background: rgba(255,255,255,.14); color: var(--ink); font-size: 15px; }
+.qclear[hidden] { display: none; }
+.nores { margin: 24px 14px; padding: 18px; text-align: center; border-radius: 18px; border: 1px dashed var(--line); background: rgba(15,4,3,.8); color: var(--muted); }
 .dish.tap { cursor: pointer; }
 .dname { all: unset; cursor: pointer; }
 .dname:focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; border-radius: 6px; }
@@ -293,6 +305,12 @@ html.lock, html.lock body { overflow: hidden; }
         <div class="slots" id="slots" role="group" data-i18n-aria="slots_aria"></div>
       </div>
 
+      <div class="stick" id="stick">
+      <div class="search" role="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+        <input id="q" type="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" spellcheck="false" data-i18n-ph="s_ph" data-i18n-aria="s_label">
+        <button class="qclear" id="qclear" type="button" hidden data-i18n-aria="s_clear">✕</button>
+      </div>
       <nav class="cats" id="cats" data-i18n-aria="cats_aria">
         <button class="chip" data-t="top" aria-current="true" data-i18n="cat_top">🔥 I più ordinati</button>
         <button class="chip" data-t="pizze" aria-current="false" data-i18n="cat_pizze">Pizze</button>
@@ -300,6 +318,7 @@ html.lock, html.lock body { overflow: hidden; }
         <button class="chip" data-t="bevande" aria-current="false" data-i18n="cat_bevande">Bevande</button>
         <button class="chip" data-t="dolci" aria-current="false" data-i18n="cat_dolci">Dolci</button>
       </nav>
+      </div>
 
       <div id="menu"></div>
       <footer class="pagefoot">
@@ -349,7 +368,7 @@ const I18N = {
     toast_search: "Qui si apre la ricerca nel menu.", lang_aria: "Lingua", search_aria: "Cerca nel menu", home_aria: "Torna alla home", burger_aria: "Menu e informazioni",
     m_title: "Menu", m_lang: "Lingua",
     imp_l_company: "Ragione sociale", imp_v_company: "Maremma che Pizza! S.r.l.", imp_l_address: "Indirizzo", imp_v_address: "Via Esempio 1, 00000 Esempiopoli (XX), Italia", imp_l_vat: "Partita IVA", imp_v_vat: "IT00000000000",
-    imp_l_contact: "Contatti", imp_v_contact: "Tel. +39 000 000 0000 · info@example.com", imp_l_resp: "Responsabile dei contenuti", imp_v_resp: "Mario Rossi", imp_demo: "Dati di esempio", i_pom: "Pomodoro", i_moz: "Mozzarella", i_bas: "Basilico", i_sal: "Salame piccante", i_buf: "Mozzarella di bufala", i_cher: "Pomodorini", i_gar: "Aglio", i_ore: "Origano", i_ham: "Prosciutto", i_mush: "Funghi", i_art: "Carciofi", i_oli: "Olive", i_moz2: "Mozzarella extra", i_ru: "Rucola", i_gr: "Grana", i_chi: "Peperoncino", custom: "Personalizza", open_pd: "Apri {n}: foto, ingredienti ed extra", pd_incl_h: "Ingredienti", pd_incl_sub: "Tocca per togliere quelli che non vuoi", pd_incl: "Incluso", pd_removed: "Tolto", pd_extra_h: "Extra", pd_extra_sub: "Aggiungi quello che vuoi", pd_add: "Aggiungi · {tot}", pd_added: "Aggiunto all'ordine: {n}", m_no: "senza",
+    imp_l_contact: "Contatti", imp_v_contact: "Tel. +39 000 000 0000 · info@example.com", imp_l_resp: "Responsabile dei contenuti", imp_v_resp: "Mario Rossi", imp_demo: "Dati di esempio", s_ph: "Cerca una pizza o un ingrediente…", s_label: "Cerca nel menu", s_clear: "Cancella ricerca", s_none: "Nessun risultato per «{q}»", i_pom: "Pomodoro", i_moz: "Mozzarella", i_bas: "Basilico", i_sal: "Salame piccante", i_buf: "Mozzarella di bufala", i_cher: "Pomodorini", i_gar: "Aglio", i_ore: "Origano", i_ham: "Prosciutto", i_mush: "Funghi", i_art: "Carciofi", i_oli: "Olive", i_moz2: "Mozzarella extra", i_ru: "Rucola", i_gr: "Grana", i_chi: "Peperoncino", custom: "Personalizza", open_pd: "Apri {n}: foto, ingredienti ed extra", pd_incl_h: "Ingredienti", pd_incl_sub: "Tocca per togliere quelli che non vuoi", pd_incl: "Incluso", pd_removed: "Tolto", pd_extra_h: "Extra", pd_extra_sub: "Aggiungi quello che vuoi", pd_add: "Aggiungi · {tot}", pd_added: "Aggiunto all'ordine: {n}", m_no: "senza",
   },
   en: {
     h1: "🍕 Order ahead and come to <span>collect it</span> 🍕", status: "Open now · ready in ~20 min", cta: "Order now",
@@ -371,7 +390,7 @@ const I18N = {
     toast_search: "The menu search opens here.", lang_aria: "Language", search_aria: "Search the menu", home_aria: "Back to home", burger_aria: "Menu and information",
     m_title: "Menu", m_lang: "Language",
     imp_l_company: "Company name", imp_v_company: "Maremma che Pizza! S.r.l.", imp_l_address: "Address", imp_v_address: "Via Esempio 1, 00000 Esempiopoli (XX), Italy", imp_l_vat: "VAT ID", imp_v_vat: "IT00000000000",
-    imp_l_contact: "Contact", imp_v_contact: "Phone +39 000 000 0000 · info@example.com", imp_l_resp: "Responsible for content", imp_v_resp: "Mario Rossi", imp_demo: "Sample data", i_pom: "Tomato", i_moz: "Mozzarella", i_bas: "Basil", i_sal: "Spicy salami", i_buf: "Buffalo mozzarella", i_cher: "Cherry tomatoes", i_gar: "Garlic", i_ore: "Oregano", i_ham: "Ham", i_mush: "Mushrooms", i_art: "Artichokes", i_oli: "Olives", i_moz2: "Extra mozzarella", i_ru: "Rocket", i_gr: "Parmesan", i_chi: "Chilli", custom: "Customise", open_pd: "Open {n}: photo, ingredients and extras", pd_incl_h: "Ingredients", pd_incl_sub: "Tap to remove what you don't want", pd_incl: "Included", pd_removed: "Removed", pd_extra_h: "Extras", pd_extra_sub: "Add whatever you like", pd_add: "Add · {tot}", pd_added: "Added to order: {n}", m_no: "no",
+    imp_l_contact: "Contact", imp_v_contact: "Phone +39 000 000 0000 · info@example.com", imp_l_resp: "Responsible for content", imp_v_resp: "Mario Rossi", imp_demo: "Sample data", s_ph: "Search a pizza or ingredient…", s_label: "Search the menu", s_clear: "Clear search", s_none: "No results for “{q}”", i_pom: "Tomato", i_moz: "Mozzarella", i_bas: "Basil", i_sal: "Spicy salami", i_buf: "Buffalo mozzarella", i_cher: "Cherry tomatoes", i_gar: "Garlic", i_ore: "Oregano", i_ham: "Ham", i_mush: "Mushrooms", i_art: "Artichokes", i_oli: "Olives", i_moz2: "Extra mozzarella", i_ru: "Rocket", i_gr: "Parmesan", i_chi: "Chilli", custom: "Customise", open_pd: "Open {n}: photo, ingredients and extras", pd_incl_h: "Ingredients", pd_incl_sub: "Tap to remove what you don't want", pd_incl: "Included", pd_removed: "Removed", pd_extra_h: "Extras", pd_extra_sub: "Add whatever you like", pd_add: "Add · {tot}", pd_added: "Added to order: {n}", m_no: "no",
   },
   fr: {
     h1: "🍕 Commande à l’avance et viens la <span>retirer</span> 🍕", status: "Ouvert · prêt en ~20 min", cta: "Commander",
@@ -393,7 +412,7 @@ const I18N = {
     toast_search: "La recherche dans le menu s’ouvre ici.", lang_aria: "Langue", search_aria: "Rechercher dans le menu", home_aria: "Retour à l’accueil", burger_aria: "Menu et informations",
     m_title: "Menu", m_lang: "Langue",
     imp_l_company: "Raison sociale", imp_v_company: "Maremma che Pizza! S.r.l.", imp_l_address: "Adresse", imp_v_address: "Via Esempio 1, 00000 Esempiopoli (XX), Italie", imp_l_vat: "N° de TVA", imp_v_vat: "IT00000000000",
-    imp_l_contact: "Contact", imp_v_contact: "Tél. +39 000 000 0000 · info@example.com", imp_l_resp: "Responsable du contenu", imp_v_resp: "Mario Rossi", imp_demo: "Données d’exemple", i_pom: "Tomate", i_moz: "Mozzarella", i_bas: "Basilic", i_sal: "Salami piquant", i_buf: "Mozzarella di bufala", i_cher: "Tomates cerises", i_gar: "Ail", i_ore: "Origan", i_ham: "Jambon", i_mush: "Champignons", i_art: "Artichauts", i_oli: "Olives", i_moz2: "Mozzarella en plus", i_ru: "Roquette", i_gr: "Parmesan", i_chi: "Piment", custom: "Personnaliser", open_pd: "Ouvrir {n} : photo, ingrédients et suppléments", pd_incl_h: "Ingrédients", pd_incl_sub: "Touchez pour retirer ce que vous ne voulez pas", pd_incl: "Inclus", pd_removed: "Retiré", pd_extra_h: "Suppléments", pd_extra_sub: "Ajoutez ce que vous voulez", pd_add: "Ajouter · {tot}", pd_added: "Ajouté à la commande : {n}", m_no: "sans",
+    imp_l_contact: "Contact", imp_v_contact: "Tél. +39 000 000 0000 · info@example.com", imp_l_resp: "Responsable du contenu", imp_v_resp: "Mario Rossi", imp_demo: "Données d’exemple", s_ph: "Cherchez une pizza ou un ingrédient…", s_label: "Rechercher dans le menu", s_clear: "Effacer la recherche", s_none: "Aucun résultat pour « {q} »", i_pom: "Tomate", i_moz: "Mozzarella", i_bas: "Basilic", i_sal: "Salami piquant", i_buf: "Mozzarella di bufala", i_cher: "Tomates cerises", i_gar: "Ail", i_ore: "Origan", i_ham: "Jambon", i_mush: "Champignons", i_art: "Artichauts", i_oli: "Olives", i_moz2: "Mozzarella en plus", i_ru: "Roquette", i_gr: "Parmesan", i_chi: "Piment", custom: "Personnaliser", open_pd: "Ouvrir {n} : photo, ingrédients et suppléments", pd_incl_h: "Ingrédients", pd_incl_sub: "Touchez pour retirer ce que vous ne voulez pas", pd_incl: "Inclus", pd_removed: "Retiré", pd_extra_h: "Suppléments", pd_extra_sub: "Ajoutez ce que vous voulez", pd_add: "Ajouter · {tot}", pd_added: "Ajouté à la commande : {n}", m_no: "sans",
   },
   de: {
     h1: "🍕 Bestelle vor und <span>hol deine Pizza ab</span> 🍕", status: "Jetzt geöffnet · fertig in ~20 Min.", cta: "Jetzt bestellen",
@@ -415,7 +434,7 @@ const I18N = {
     toast_search: "Hier öffnet sich die Menüsuche.", lang_aria: "Sprache", search_aria: "Menü durchsuchen", home_aria: "Zur Startseite", burger_aria: "Menü und Informationen",
     m_title: "Menü", m_lang: "Sprache",
     imp_l_company: "Firmenname", imp_v_company: "Maremma che Pizza! S.r.l.", imp_l_address: "Anschrift", imp_v_address: "Via Esempio 1, 00000 Esempiopoli (XX), Italien", imp_l_vat: "USt-IdNr.", imp_v_vat: "IT00000000000",
-    imp_l_contact: "Kontakt", imp_v_contact: "Tel. +39 000 000 0000 · info@example.com", imp_l_resp: "Verantwortlich für den Inhalt", imp_v_resp: "Mario Rossi", imp_demo: "Beispieldaten", i_pom: "Tomaten", i_moz: "Mozzarella", i_bas: "Basilikum", i_sal: "Scharfe Salami", i_buf: "Büffelmozzarella", i_cher: "Kirschtomaten", i_gar: "Knoblauch", i_ore: "Oregano", i_ham: "Schinken", i_mush: "Pilze", i_art: "Artischocken", i_oli: "Oliven", i_moz2: "Extra Mozzarella", i_ru: "Rucola", i_gr: "Parmesan", i_chi: "Chili", custom: "Anpassen", open_pd: "{n} öffnen: Foto, Zutaten und Extras", pd_incl_h: "Zutaten", pd_incl_sub: "Tippen, um Zutaten wegzulassen", pd_incl: "Enthalten", pd_removed: "Weggelassen", pd_extra_h: "Extras", pd_extra_sub: "Nach Wunsch hinzufügen", pd_add: "Hinzufügen · {tot}", pd_added: "Zur Bestellung hinzugefügt: {n}", m_no: "ohne",
+    imp_l_contact: "Kontakt", imp_v_contact: "Tel. +39 000 000 0000 · info@example.com", imp_l_resp: "Verantwortlich für den Inhalt", imp_v_resp: "Mario Rossi", imp_demo: "Beispieldaten", s_ph: "Pizza oder Zutat suchen…", s_label: "Im Menü suchen", s_clear: "Suche löschen", s_none: "Keine Ergebnisse für „{q}“", i_pom: "Tomaten", i_moz: "Mozzarella", i_bas: "Basilikum", i_sal: "Scharfe Salami", i_buf: "Büffelmozzarella", i_cher: "Kirschtomaten", i_gar: "Knoblauch", i_ore: "Oregano", i_ham: "Schinken", i_mush: "Pilze", i_art: "Artischocken", i_oli: "Oliven", i_moz2: "Extra Mozzarella", i_ru: "Rucola", i_gr: "Parmesan", i_chi: "Chili", custom: "Anpassen", open_pd: "{n} öffnen: Foto, Zutaten und Extras", pd_incl_h: "Zutaten", pd_incl_sub: "Tippen, um Zutaten wegzulassen", pd_incl: "Enthalten", pd_removed: "Weggelassen", pd_extra_h: "Extras", pd_extra_sub: "Nach Wunsch hinzufügen", pd_add: "Hinzufügen · {tot}", pd_added: "Zur Bestellung hinzugefügt: {n}", m_no: "ohne",
   },
 };
 let lang = 'it';
@@ -451,11 +470,16 @@ function el(tag, attrs = {}, ...kids) {
   return e;
 }
 const bigArt = (k) => `<svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="104" cy="108" r="88" fill="#000" opacity=".35"/><circle cx="100" cy="100" r="88" fill="#d9954a"/><circle cx="100" cy="100" r="80" fill="#c92f19"/><circle cx="100" cy="100" r="75" fill="#f4bb40"/><ellipse cx="78" cy="70" rx="40" ry="26" fill="#ffe08a" opacity=".45"/><g transform="translate(100 100) scale(2) translate(-50 -50)">${PIZZA[k]}</g><path d="M100 26V174M26 100H174M48 48L152 152M152 48L48 152" stroke="rgba(255,240,200,.5)" stroke-width="1.6"/></svg>`;
+let query = '';
+const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
+const matches = (it) => !query || norm([t('n_' + it.k), t('d_' + it.k), ...(it.base || []).map((i) => t('i_' + i))].join(' ')).includes(norm(query));
 function render() {
   root.replaceChildren();
   for (const cat of MENU) {
+    if (query && cat.id === 'top') continue;
+    if (!cat.items.some(matches)) continue;
     const sec = el('section', { class: 'sec', id: 'sec-' + cat.id }, el('h3', {}, t('cat_' + cat.id)));
-    for (const it of cat.items) {
+    for (const it of cat.items.filter(matches)) {
       const name = t('n_' + it.k), desc = t('d_' + it.k), detail = !!it.base;
       const q = Object.values(cart).filter((e) => e.k === it.k).reduce((a, e) => a + e.qty, 0);
       const minusKey = () => (cart[it.k] ? it.k : Object.keys(cart).filter((x) => cart[x].k === it.k).pop());
@@ -478,6 +502,7 @@ function render() {
     }
     root.append(sec);
   }
+  if (query && !root.children.length) root.append(el('p', { class: 'nores', role: 'status' }, t('s_none', { q: query })));
 }
 function change(key, it, d) {
   const cur = cart[key], q = (cur?.qty || 0) + d;
@@ -632,6 +657,7 @@ function applyLang(code) {
   document.querySelectorAll('[data-i18n]').forEach((n) => { n.textContent = t(n.dataset.i18n); });
   document.querySelectorAll('[data-i18n-html]').forEach((n) => { n.innerHTML = t(n.dataset.i18nHtml); });
   document.querySelectorAll('[data-i18n-aria]').forEach((n) => { n.setAttribute('aria-label', t(n.dataset.i18nAria)); });
+  document.querySelectorAll('[data-i18n-ph]').forEach((n) => { n.placeholder = t(n.dataset.i18nPh); });
   $('curflag').innerHTML = FLAGS[code]; $('curcode').textContent = code.toUpperCase();
   renderSlots(); render(); dock(); renderLangs(); renderFooter();
   if ($('sheet').classList.contains('open')) renderSheet();
@@ -646,12 +672,23 @@ function renderSlots() {
 }
 
 const screen = $('screen');
-function goTo(id) {
-  const s = $('sec-' + id); if (!s) return;
+function stickH() { return $('stick').offsetHeight + 8; }
+function scrollToEl(s, onlyDown) {
   const inner = getComputedStyle(screen).overflowY !== 'visible';
-  if (inner) screen.scrollTo({ top: s.offsetTop - 70, behavior: 'smooth' });
-  else window.scrollTo({ top: s.getBoundingClientRect().top + window.scrollY - 70, behavior: 'smooth' });
+  if (inner) { const y = s.offsetTop - stickH(); if (!onlyDown || screen.scrollTop < y) screen.scrollTo({ top: y, behavior: 'smooth' }); }
+  else { const y = s.getBoundingClientRect().top + window.scrollY - stickH(); if (!onlyDown || window.scrollY < y) window.scrollTo({ top: y, behavior: 'smooth' }); }
 }
+function goTo(id) {
+  if (query) clearSearch();
+  const s = $('sec-' + id); if (s) scrollToEl(s, false);
+}
+function clearSearch() { query = ''; $('q').value = ''; $('qclear').hidden = true; $('cats').hidden = false; render(); }
+$('q').addEventListener('input', () => {
+  query = $('q').value.trim(); $('qclear').hidden = !$('q').value; $('cats').hidden = !!query; render();
+  if (query) scrollToEl($('menu'), true);
+});
+$('qclear').addEventListener('click', () => { clearSearch(); $('q').focus(); });
+$('q').addEventListener('keydown', (e) => { if (e.key === 'Escape') { clearSearch(); e.stopPropagation(); } else if (e.key === 'Enter') $('q').blur(); });
 function syncLock() { document.documentElement.classList.toggle('lock', $('sheet').classList.contains('open') || !!pd); }
 $('cta').addEventListener('click', () => goTo('top'));
 $('cart').addEventListener('click', () => (count() ? openSheet() : goTo('top')));
